@@ -19,10 +19,10 @@ class Unit{
 		void showStatus();
 		void newTurn();
 		int attack(Unit &);
-		int beAttacked(int);
-		int heal();	
-		void guard();
-		bool isDead();	
+		int beAttacked(int); //return dam
+		int heal();	//random <= HPMAX
+		void guard();//change parametre gard on
+		bool isDead();	//hP<=0 return true
 };
 
 void Unit::create(string t){ 
@@ -71,6 +71,42 @@ void Unit::newTurn(){
 //
 //
 
+int Unit::attack(Unit &oppunit){
+	return oppunit.beAttacked(atk);;
+	
+	
+}
+int Unit::beAttacked(int oppatk){
+	
+	int dmg =oppatk-def;
+	if (guard_on){
+		dmg=dmg/3;
+	}
+	hp-=dmg;
+	return dmg;
+
+}
+int Unit::heal(){
+	int recover=rand()%21+10;
+	
+	int hpn=hpmax-hp;
+	if(hp+recover>hpmax){
+		hp = hpmax;
+		return hpn;
+	}
+	hp += recover;
+	return recover;
+}
+
+void Unit::guard(){
+	guard_on=true;
+}
+
+bool Unit::isDead(){
+ return(hp<=0);
+}
+
+
 void drawScene(char p_action,int p,char m_action,int m){
 	cout << "                                                       \n";
 	if(p_action == 'A'){
@@ -86,20 +122,20 @@ void drawScene(char p_action,int p,char m_action,int m){
 	}else if(m_action == 'G'){
 	cout << "                                 *** **   ** ***       Guard!\n";
 	}else{
-	cout << "                                 *** **   ** ***       \n";	
+	cout << "                                 ***  O   O ***       \n";	
 	}
 	cout << "                                  ** **   ** **        \n";
 	cout << "                   ***             *         *         \n";
-	if(p_action == 'A'){
-	cout << "        Attack!    ***  *           *********          \n";		
+	if(p_action == 'A'){			
+	cout << "        Attack!    ***  * *          *********          \n";		
 	}else if(p_action == 'H'){
 	cout << "      Heal! +" << setw(2) << p << "    ***  *           *********          \n";
 	}else if(p_action == 'G'){
-	cout << "         Guard!    ***  *           *********          \n";
+	cout << "         Guard!    ***  * *         *********          \n";
 	}else{
-	cout << "                   ***  *           *********          \n";	
+	cout << "                   ***  *  *         *********          \n";	
 	}
-	cout << "                    *  *       ***  *  *  *            \n";
+	cout << "                    *  * *      ***  *  *  *            \n";
 	cout << "                  *****           **   *   *           \n";
 	cout << "                    *                  *    ***        \n";
 	cout << "                   * *               **        *       \n";
